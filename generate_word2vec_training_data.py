@@ -40,4 +40,5 @@ if __name__ == "__main__":
     input_file = sys.argv[1]  # ads data
     word2vec_training_file = sys.argv[2]
 
-    generate_word2vec_training_data(input_file, word2vec_training_file)
+    logger = logging.getLogger()
+    generate_word2vec_training_data(input_file, word2vec_training_file, logger)
