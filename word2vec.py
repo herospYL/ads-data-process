@@ -5,16 +5,25 @@ import logging
 from pyspark import SparkContext
 from pyspark.mllib.feature import Word2Vec
 
+from generate_word2vec_training_data import WORD2VEC_TRAINING_FILE
 
-def word2vec(training_file, synonyms_data_file, trace_file, logger):
+WORD2VEC_TRACE_FILE = "word2vec_trace_file.txt"
+SYNONYM_DATA_FILE = "synonym_data_file.txt"
+
+
+def word2vec(file_dir, logger):
+    word2vec_training_file = file_dir + WORD2VEC_TRAINING_FILE
+    synonym_data_file = file_dir + SYNONYM_DATA_FILE
+    word2vec_trace_file = file_dir + WORD2VEC_TRACE_FILE
+
     sc = SparkContext(appName="word2vec")
-    inp = sc.textFile(training_file).map(lambda line: line.encode("utf8", "ignore").split(" "))
+    inp = sc.textFile(word2vec_training_file).map(lambda line: line.encode("utf8", "ignore").split(" "))
 
     word2vec = Word2Vec()
     model = word2vec.setLearningRate(0.02).setMinCount(5).setVectorSize(10).setSeed(2017).fit(inp)
 
     vec = model.getVectors()
-    synonyms_data = open(synonyms_data_file, "w")
+    synonyms_data = open(synonym_data_file, "w")
 
     logger.debug("len of vec", len(vec))
     for word in vec.keys():
@@ -28,16 +37,14 @@ def word2vec(training_file, synonyms_data_file, trace_file, logger):
         synonyms_data.write('\n')
 
     synonyms_data.close()
-    model.save(sc, trace_file)
+    model.save(sc, word2vec_trace_file)
     sc.stop()
 
     logger.info("Word2Vec training finished")
 
 
 if __name__ == "__main__":
-    training_file = sys.argv[1]
-    synonyms_data_file = sys.argv[2]
-    trace_file = sys.argv[3]
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    word2vec(training_file, synonyms_data_file, training_file, logger)
+    word2vec(file_dir, logger)

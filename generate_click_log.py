@@ -4,11 +4,11 @@ import time
 import json
 import logging
 
-from generate_query_ad import (AD_INPUT_FILE, QUERY_CAMP_AD_FILE, CAMPAIGN_WEIGHT_FILE, AD_WEIGHT_FILE,
+from generate_query_ad import (AD_FILE, QUERY_CAMP_AD_FILE, CAMPAIGN_WEIGHT_FILE, AD_WEIGHT_FILE,
                                CAMPAIGN_ID_CATEGORY_FILE, CAMPAIGN_ID_AD_ID_FILE)
 
-USER_INPUT_FILE = "user_input_file"
-CLICK_LOG_OUTPUT_FILE = "click_log_output_file"
+USER_FILE = "user_file.txt"
+CLICK_LOG_FILE = "click_log_file.txt"
 
 
 class _ClickLogGenerator:
@@ -250,17 +250,17 @@ class _ClickLogGenerator:
         return True
 
 
-def generate_click_log(input_file_map, logger):
+def generate_click_log(file_dir, logger):
     generator = _ClickLogGenerator(logger)
 
-    ad_input_file = input_file_map[AD_INPUT_FILE]
-    user_input_file = input_file_map[USER_INPUT_FILE]
-    query_camp_ad_file = input_file_map[QUERY_CAMP_AD_FILE]
-    campaign_weight_file = input_file_map[CAMPAIGN_WEIGHT_FILE]
-    ad_weight_file = input_file_map[AD_WEIGHT_FILE]
-    campaign_id_category_file = input_file_map[CAMPAIGN_ID_CATEGORY_FILE]
-    campaign_id_ad_id_file = input_file_map[CAMPAIGN_ID_AD_ID_FILE]
-    click_log_output_file = input_file_map[CLICK_LOG_OUTPUT_FILE]
+    ad_input_file = file_dir + AD_FILE
+    user_input_file = file_dir + USER_FILE
+    query_camp_ad_file = file_dir + QUERY_CAMP_AD_FILE
+    campaign_weight_file = file_dir + CAMPAIGN_WEIGHT_FILE
+    ad_weight_file = file_dir + AD_WEIGHT_FILE
+    campaign_id_category_file = file_dir + CAMPAIGN_ID_CATEGORY_FILE
+    campaign_id_ad_id_file = file_dir + CAMPAIGN_ID_AD_ID_FILE
+    click_log_output_file = file_dir + CLICK_LOG_FILE
 
     ad_list = []
     ad_id_query = {}
@@ -476,10 +476,7 @@ if __name__ == "__main__":
     # use following feature to generate click Log
     # IP, device_id, AdId,QueryCategry_AdsCategory,Query_CampaignId, Query_AdId
 
-    input_file_map = {AD_INPUT_FILE: sys.argv[1], USER_INPUT_FILE: sys.argv[2], QUERY_CAMP_AD_FILE: sys.argv[3],
-                      CAMPAIGN_WEIGHT_FILE: sys.argv[4], AD_WEIGHT_FILE: sys.argv[5],
-                      CAMPAIGN_ID_CATEGORY_FILE: sys.argv[6],
-                      CAMPAIGN_ID_AD_ID_FILE: sys.argv[7], CLICK_LOG_OUTPUT_FILE: sys.argv[8]}
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    generate_click_log(input_file_map, logger)
+    generate_click_log(file_dir, logger)

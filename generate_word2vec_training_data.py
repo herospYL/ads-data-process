@@ -2,16 +2,23 @@ import sys
 import json
 import logging
 
+from generate_query_ad import AD_FILE
 
-def generate_word2vec_training_data(input_file, word2vec_training_file, logger):
+WORD2VEC_TRAINING_FILE = "word2vec_training_file"
+
+
+def generate_word2vec_training_data(file_dir, logger):
+    ad_input_file = file_dir + AD_FILE
+    word2vec_training_file = file_dir + WORD2VEC_TRAINING_FILE
+
     word2vec_training = open(word2vec_training_file, "w")
 
-    with open(input_file, "r") as lines:
+    with open(ad_input_file, "r") as lines:
         for line in lines:
             entry = json.loads(line.strip())
             if "title" in entry and "adId" in entry and "query" in entry:
                 title = entry["title"].lower().encode('utf-8')
-                query = entry["query"].lower().encode('utf-8') # TODO: Encoding necessary?
+                query = entry["query"].lower().encode('utf-8')  # TODO: Encoding necessary?
 
                 # remove number from text
                 new_query_tokens = []
@@ -37,8 +44,7 @@ def generate_word2vec_training_data(input_file, word2vec_training_file, logger):
 
 
 if __name__ == "__main__":
-    input_file = sys.argv[1]  # ads data
-    word2vec_training_file = sys.argv[2]
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    generate_word2vec_training_data(input_file, word2vec_training_file, logger)
+    generate_word2vec_training_data(file_dir, logger)

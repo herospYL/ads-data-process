@@ -3,13 +3,13 @@ import sys
 import logging
 from itertools import islice
 
-AD_INPUT_FILE = "ad_input_file"
-QUERY_CAMP_AD_FILE = "query_camp_ad_file"
-CAMPAIGN_WEIGHT_FILE = "campaign_weight_file"
-AD_WEIGHT_FILE = "ad_weight_file"
-QUERY_GROUP_ID_QUERY_FILE = "query_group_id_query_file"
-CAMPAIGN_ID_CATEGORY_FILE = "campaign_id_category_file"
-CAMPAIGN_ID_AD_ID_FILE = "campaign_id_ad_id_file"
+AD_FILE = "ad_file.txt"
+QUERY_CAMP_AD_FILE = "query_camp_ad_file.txt"
+CAMPAIGN_WEIGHT_FILE = "campaign_weight_file.txt"
+AD_WEIGHT_FILE = "ad_weight_file.txt"
+QUERY_GROUP_ID_QUERY_FILE = "query_group_id_query_file.txt"
+CAMPAIGN_ID_CATEGORY_FILE = "campaign_id_category_file.txt"
+CAMPAIGN_ID_AD_ID_FILE = "campaign_id_ad_id_file.txt"
 
 
 def window(seq, n=2):
@@ -45,14 +45,14 @@ def calculate_relevance_score(query, keywords):
     return score
 
 
-def generate_query_ad(input_file_map, logger):
-    ad_input_file = input_file_map[AD_INPUT_FILE]
-    query_camp_ad_file = input_file_map[QUERY_CAMP_AD_FILE]
-    campaign_weight_file = input_file_map[CAMPAIGN_WEIGHT_FILE]
-    ad_weight_file = input_file_map[AD_WEIGHT_FILE]
-    query_group_id_query_file = input_file_map[QUERY_GROUP_ID_QUERY_FILE]
-    campaign_id_category_file = input_file_map[CAMPAIGN_ID_CATEGORY_FILE]
-    campaign_id_ad_id_file = input_file_map[CAMPAIGN_ID_AD_ID_FILE]
+def generate_query_ad(file_dir, logger):
+    ad_input_file = file_dir + AD_FILE
+    query_camp_ad_file = file_dir + QUERY_CAMP_AD_FILE
+    campaign_weight_file = file_dir + CAMPAIGN_WEIGHT_FILE
+    ad_weight_file = file_dir + AD_WEIGHT_FILE
+    query_group_id_query_file = file_dir + QUERY_GROUP_ID_QUERY_FILE
+    campaign_id_category_file = file_dir + CAMPAIGN_ID_CATEGORY_FILE
+    campaign_id_ad_id_file = file_dir + CAMPAIGN_ID_AD_ID_FILE
 
     query_camp_ad = {}
     campaign_weight = {}
@@ -145,11 +145,7 @@ def generate_query_ad(input_file_map, logger):
 
 
 if __name__ == "__main__":
-
-    input_file_map = {AD_INPUT_FILE: sys.argv[1], QUERY_CAMP_AD_FILE: sys.argv[2],
-                      CAMPAIGN_WEIGHT_FILE: sys.argv[3], AD_WEIGHT_FILE: sys.argv[4],
-                      QUERY_GROUP_ID_QUERY_FILE: sys.argv[5], CAMPAIGN_ID_CATEGORY_FILE: sys.argv[6],
-                      CAMPAIGN_ID_AD_ID_FILE: sys.argv[7]}
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    generate_query_ad(input_file_map, logger)
+    generate_query_ad(file_dir, logger)

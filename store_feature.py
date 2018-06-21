@@ -20,6 +20,8 @@ QUERY_CAMPAIGN_ID_IMPRESSION_PREFIX = 'qcidi'
 QUERY_AD_ID_CLICK_PREFIX = 'qaidc'
 QUERY_AD_ID_IMPRESSION_PREFIX = 'qaidi'
 
+FEATURE_STORE_FILE = "feature_store_file"
+
 
 def _write_feature(feature_dir, key_prefix, redis_client, output, logger):
     path = feature_dir + "/part*"
@@ -42,25 +44,25 @@ def _write_feature(feature_dir, key_prefix, redis_client, output, logger):
                 output.write('\n')
 
 
-def store_feature(input_dir, output_file, logger):
-    device_id_click = input_dir + DEVICE_ID_CLICK
-    device_id_impression = input_dir + DEVICE_ID_IMPRESSION
+def store_feature(file_dir, logger):
+    device_id_click = file_dir + DEVICE_ID_CLICK
+    device_id_impression = file_dir + DEVICE_ID_IMPRESSION
 
-    device_ip_click = input_dir + DEVICE_IP_CLICK
-    device_ip_impression = input_dir + DEVICE_IP_IMPRESSION
+    device_ip_click = file_dir + DEVICE_IP_CLICK
+    device_ip_impression = file_dir + DEVICE_IP_IMPRESSION
 
-    ad_id_click = input_dir + AD_ID_CLICK
-    ad_id_impression = input_dir + AD_ID_IMPRESSION
+    ad_id_click = file_dir + AD_ID_CLICK
+    ad_id_impression = file_dir + AD_ID_IMPRESSION
 
-    query_campaign_id_click = input_dir + QUERY_CAMPAIGN_ID_CLICK
-    query_campaign_id_impression = input_dir + QUERY_CAMPAIGN_ID_IMPRESSION
+    query_campaign_id_click = file_dir + QUERY_CAMPAIGN_ID_CLICK
+    query_campaign_id_impression = file_dir + QUERY_CAMPAIGN_ID_IMPRESSION
 
-    query_ad_id_click = input_dir + QUERY_AD_ID_CLICK
-    query_ad_id_impression = input_dir + QUERY_AD_ID_IMPRESSION
+    query_ad_id_click = file_dir + QUERY_AD_ID_CLICK
+    query_ad_id_impression = file_dir + QUERY_AD_ID_IMPRESSION
 
     # Output targets initialization
-    output_file_full_path = input_dir + output_file
-    output = open(output_file_full_path, "w")
+    feature_store_file = file_dir + FEATURE_STORE_FILE
+    output = open(feature_store_file, "w")
     client = redis.StrictRedis()
 
     _write_feature(device_id_click, DEVICE_ID_CLICK_PREFIX, client, output, logger)
@@ -83,8 +85,7 @@ def store_feature(input_dir, output_file, logger):
 
 
 if __name__ == "__main__":
-    input_dir = sys.argv[1]
-    output_file = sys.argv[2]
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    store_feature(input_dir, output_file, logger)
+    store_feature(file_dir, logger)

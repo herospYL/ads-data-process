@@ -3,8 +3,11 @@ import random
 import sys
 import logging
 
+BUDGET_FILE = "budget_file.txt"
 
-def generate_budget(output_file, logger):
+
+def generate_budget(file_dir, logger):
+    output_file = file_dir + BUDGET_FILE
     output = open(output_file, "w")
     template = '{"campaignId":8001,"budget":1500}'
 
@@ -20,7 +23,7 @@ def generate_budget(output_file, logger):
 
 
 if __name__ == "__main__":
-    output_file = sys.argv[1]
+    file_dir = sys.argv[1]
 
     logger = logging.getLogger()
-    generate_budget(output_file, logger)
+    generate_budget(file_dir, logger)
