@@ -20,7 +20,7 @@ QUERY_CAMPAIGN_ID_IMPRESSION_PREFIX = 'qcidi'
 QUERY_AD_ID_CLICK_PREFIX = 'qaidc'
 QUERY_AD_ID_IMPRESSION_PREFIX = 'qaidi'
 
-FEATURE_STORE_FILE = "feature_store_file"
+FEATURE_STORE_FILE = "feature_store_file.txt"
 
 
 def _write_feature(feature_dir, key_prefix, redis_client, output, logger):
@@ -62,7 +62,7 @@ def store_feature(file_dir, logger):
 
     # Output targets initialization
     feature_store_file = file_dir + FEATURE_STORE_FILE
-    output = open(feature_store_file, "w")
+    output = open(feature_store_file, "a")
     client = redis.StrictRedis()
 
     _write_feature(device_id_click, DEVICE_ID_CLICK_PREFIX, client, output, logger)

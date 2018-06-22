@@ -5,7 +5,7 @@ import logging
 from word2vec import SYNONYM_DATA_FILE
 from generate_query_ad import AD_FILE
 
-SYNONYM_STORE_FILE = "synonym_store_file"
+SYNONYM_STORE_FILE = "synonym_store_file.txt"
 
 
 # input： [nike, running, shoes] , Dict

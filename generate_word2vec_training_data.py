@@ -4,7 +4,7 @@ import logging
 
 from generate_query_ad import AD_FILE
 
-WORD2VEC_TRAINING_FILE = "word2vec_training_file"
+WORD2VEC_TRAINING_FILE = "word2vec_training_file.txt"
 
 
 def generate_word2vec_training_data(file_dir, logger):
