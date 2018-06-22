@@ -27,7 +27,7 @@ def _write_feature(feature_dir, key_prefix, redis_client, output, logger):
     path = feature_dir + "/part*"
 
     for filename in glob.glob(path):
-        logger.info("input data file:", filename)
+        logger.info("input data file:{0}".format(filename))
         with open(filename, 'r') as f:
             for line in f:
                 line = line.strip().strip("()")

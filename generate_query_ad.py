@@ -109,7 +109,7 @@ def generate_query_ad(file_dir, logger):
             total_ad_relevance_per_camp = 0.0
             for ad_id in query_camp_ad[query_group_id][camp_id]:
                 total_ad_relevance_per_camp += ad_weight[ad_id]
-                logger.debug("total_ad_relevance_per_camp:", total_ad_relevance_per_camp)
+                logger.debug("total_ad_relevance_per_camp:{0}".format(total_ad_relevance_per_camp))
 
             for ad_id in query_camp_ad[query_group_id][camp_id]:
                 if total_ad_relevance_per_camp > 0.0:
@@ -117,7 +117,7 @@ def generate_query_ad(file_dir, logger):
 
             total_relevance_cross_camp += total_ad_relevance_per_camp
             campaign_weight[camp_id] = total_ad_relevance_per_camp
-            logger.debug("campaign_weight[camp_id]:", campaign_weight[camp_id])
+            logger.debug("campaign_weight[camp_id]:{0}".format(campaign_weight[camp_id]))
 
         for camp_id in query_camp_ad[query_group_id]:
             if total_relevance_cross_camp > 0.0:

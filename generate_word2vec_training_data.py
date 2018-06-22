@@ -17,8 +17,8 @@ def generate_word2vec_training_data(file_dir, logger):
         for line in lines:
             entry = json.loads(line.strip())
             if "title" in entry and "adId" in entry and "query" in entry:
-                title = entry["title"].lower().encode('utf-8')
-                query = entry["query"].lower().encode('utf-8')  # TODO: Encoding necessary?
+                title = entry["title"].lower()
+                query = entry["query"].lower()
 
                 # remove number from text
                 new_query_tokens = []

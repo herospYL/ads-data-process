@@ -4,11 +4,11 @@ import logging
 import boto3
 
 from generate_budget import generate_budget
-from generate_query_ad import generate_query_ad
+from generate_query_ad import (generate_query_ad, AD_FILE)
 from generate_word2vec_training_data import generate_word2vec_training_data
 from word2vec import word2vec
 from generate_synonym import (generate_synonym, SYNONYM_STORE_FILE)
-from generate_click_log import generate_click_log
+from generate_click_log import (generate_click_log, USER_FILE)
 from select_feature import select_feature
 from store_feature import (store_feature, FEATURE_STORE_FILE)
 from prepare_ctr_training_data import prepare_ctr_training_data
@@ -39,12 +39,19 @@ if __name__ == "__main__":
     bucket = sys.argv[4]
     debug_mode = sys.argv[5]
 
+    logger = None
     try:
-        shutil.copy2(raw_ads_path, file_dir)
-        shutil.copy2(users_path, file_dir)
-
         logger = set_logger(file_dir, debug_mode)
         s3 = boto3.client('s3')
+
+        if not file_dir.endswith('/'):
+            file_dir = file_dir + '/'
+
+        raw_ads_dest = file_dir + AD_FILE
+        users_dest = file_dir + USER_FILE
+
+        shutil.copy(raw_ads_path, raw_ads_dest)
+        shutil.copy(users_path, users_dest)
 
         generate_budget(file_dir, logger)
         generate_query_ad(file_dir, logger)

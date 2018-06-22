@@ -26,7 +26,7 @@ def select_feature(file_dir, logger):
     click_log_input_file = file_dir + CLICK_LOG_FILE
 
     sc = SparkContext(appName="CTR_Features")
-    data = sc.textFile(click_log_input_file).map(lambda line: line.encode("utf8", "ignore").split(','))
+    data = sc.textFile(click_log_input_file).map(lambda line: line.split(','))
     # count feature
     device_ip_click = data.map(lambda fields: (fields[0], int(fields[7]))).reduceByKey(lambda v1, v2: v1 + v2)
     device_ip_impression = data.map(lambda fields: (fields[0], 1)).reduceByKey(lambda v1, v2: v1 + v2)

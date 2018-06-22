@@ -40,8 +40,8 @@ def prepare_feature_val(fields, redis_client, logger):
 
     device_ip_click_key = DEVICE_IP_CLICK_PREFIX + "_" + device_ip
     device_ip_click_val = redis_client.get(device_ip_click_key)
-    # logger.debug("key=", device_ip_click_key)
-    # logger.debug("val=", device_ip_click_val)
+    # logger.debug("key={0}".format(device_ip_click_key))
+    # logger.debug("val={0}".format(device_ip_click_val))
     if not device_ip_click_val:
         device_ip_click_val = "0"
 
@@ -96,7 +96,7 @@ def prepare_ctr_training_data(file_dir, logger):
     sc = SparkContext(appName="CTR_Features")
 
     click_log_file = file_dir + CLICK_LOG_FILE
-    data = sc.textFile(click_log_file).map(lambda line: line.encode("utf8", "ignore").split(','))
+    data = sc.textFile(click_log_file).map(lambda line: line.split(','))
     feature_data = data.map(lambda fields: (prepare_feature_val(fields, client, logger), int(fields[7])))
 
     ctr_training_data = file_dir + CTR_TRAINING_DATA

@@ -53,6 +53,8 @@ def ctr_gbdt(file_dir, logger):
     ctr_gbdt_data = file_dir + CTR_GBDT_DATA
     model.save(sc, ctr_gbdt_data)
 
+    logger.info("GBDT training finished")
+
 
 def ctr_logistic(file_dir, logger):
     sc = SparkContext(appName="CTRLogisticRegression")
@@ -78,6 +80,8 @@ def ctr_logistic(file_dir, logger):
     # Save and load model
     ctr_logistic_data = file_dir + CTR_LOGISTIC_DATA
     model.save(sc, ctr_logistic_data)
+
+    logger.info("Logistic Regression training finished")
 
 
 if __name__ == "__main__":

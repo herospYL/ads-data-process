@@ -33,7 +33,7 @@ class _ClickLogGenerator:
             sample_camps_weight = {}
             sample_camps = {}
             for camp_id in query_camp_ad[query_group_id]:
-                self.logger.debug("camp_id:", camp_id, ",weight:", campaign_weight[camp_id])
+                self.logger.debug("camp_id:{0}, weight:{1}".format(camp_id, campaign_weight[camp_id]))
                 sample_camps_weight[camp_id] = campaign_weight[camp_id]
 
             total_freq = 0
@@ -46,8 +46,7 @@ class _ClickLogGenerator:
                     sample_camps[sample_camp_id] = 1
 
             for sample_camp_id in sample_camps:
-                self.logger.debug("camp_id:", sample_camp_id, ",freq distribution:",
-                                  sample_camps[sample_camp_id] * 1.0 / total_freq)
+                self.logger.debug("camp_id:{0}, freq distribution:{1}".format(sample_camp_id, sample_camps[sample_camp_id] * 1.0 / total_freq))
 
                 self.logger.debug("=================================")
 
@@ -177,8 +176,8 @@ class _ClickLogGenerator:
             return fields
 
         if query == "" or str(result[0]) == "" or str(result[1]) == "" or str(result[2]) == "":
-            self.logger.error("invalid fields in negative_sampling", query, str(result[0]), str(result[1]),
-                              str(result[2]))
+            self.logger.error("invalid fields in negative_sampling {0} {1} {2} {3}".format(query, str(result[0]), str(result[1]),
+                              str(result[2])))
             return fields
         session_id = int(round(time.time() * 1000))
         # Device IP, Device id,Session id,Query,AdId,CampaignId,Ad_category_Query_category(0/1),clicked(0/1)
@@ -228,7 +227,7 @@ class _ClickLogGenerator:
         fields = []
 
         if query == "" or str(sample_ad_id) == "" or str(sample_camp_id) == "":
-            self.logger.error("invalid fields in positive_sampling", query, str(sample_ad_id), str(sample_camp_id))
+            self.logger.error("invalid fields in positive_sampling {0} {1} {2}".format(query, str(sample_ad_id), str(sample_camp_id)))
             return fields
 
         fields.append(str(ip))
