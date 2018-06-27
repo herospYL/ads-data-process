@@ -51,7 +51,7 @@ def select_feature(file_dir, logger):
     device_id_impression.saveAsTextFile(file_dir + DEVICE_ID_IMPRESSION)
 
     device_ip_click.saveAsTextFile(file_dir + DEVICE_IP_CLICK)
-    device_ip_impression.saveAsTextFile(file_dir + DEVICE_ID_IMPRESSION)
+    device_ip_impression.saveAsTextFile(file_dir + DEVICE_IP_IMPRESSION)
 
     ad_id_click.saveAsTextFile(file_dir + AD_ID_CLICK)
     ad_id_impression.saveAsTextFile(file_dir + AD_ID_IMPRESSION)

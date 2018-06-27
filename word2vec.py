@@ -14,7 +14,7 @@ SYNONYM_DATA_FILE = "synonym_data_file.txt"
 def word2vec(file_dir, logger):
     word2vec_training_file = file_dir + WORD2VEC_TRAINING_FILE
     synonym_data_file = file_dir + SYNONYM_DATA_FILE
-    word2vec_trace_file = file_dir + WORD2VEC_TRACE
+    word2vec_trace_data = file_dir + WORD2VEC_TRACE
 
     sc = SparkContext(appName="word2vec")
     inp = sc.textFile(word2vec_training_file).map(lambda line: line.split(" "))
@@ -37,7 +37,7 @@ def word2vec(file_dir, logger):
         synonyms_data.write('\n')
 
     synonyms_data.close()
-    model.save(sc, word2vec_trace_file)
+    model.save(sc, word2vec_trace_data)
     sc.stop()
 
     logger.info("Word2Vec training finished")

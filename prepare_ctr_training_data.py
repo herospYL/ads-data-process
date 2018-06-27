@@ -96,7 +96,7 @@ def prepare_ctr_training_data(file_dir, logger):
     sc = SparkContext(appName="CTR_Features")
 
     click_log_file = file_dir + CLICK_LOG_FILE
-    data = sc.textFile(click_log_file).map(lambda line: line.split(','))
+    data = sc.textFile(click_log_file, 100).map(lambda line: line.split(','))  # File is large, need more partition
     feature_data = data.map(lambda fields: (prepare_feature_val(fields, client, logger), int(fields[7])))
 
     ctr_training_data = file_dir + CTR_TRAINING_DATA
