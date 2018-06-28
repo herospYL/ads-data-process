@@ -28,7 +28,7 @@ def _query_rewriter_helper(query_terms, synonyms_dict):
         return [s + '_' + query_terms[-1] for s in prev]
 
 
-def generate_synonym(file_dir, logger):
+def generate_synonym(file_dir):
     synonym_data_file = file_dir + SYNONYM_DATA_FILE
     ad_input_file = file_dir + AD_FILE
     synonym_store_file = file_dir + SYNONYM_STORE_FILE
@@ -69,11 +69,11 @@ def generate_synonym(file_dir, logger):
     with open(synonym_store_file, 'w') as fp:
         json.dump(synonyms_output, fp)
 
+    logger = logging.getLogger()
     logger.info("Synonyms data generation finished")
 
 
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    generate_synonym(file_dir, logger)
+    generate_synonym(file_dir)

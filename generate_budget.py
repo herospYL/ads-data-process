@@ -6,7 +6,7 @@ import logging
 BUDGET_FILE = "budget_file.txt"
 
 
-def generate_budget(file_dir, logger):
+def generate_budget(file_dir):
     output_file = file_dir + BUDGET_FILE
     output = open(output_file, "w")
     template = '{"campaignId":8001,"budget":1500}'
@@ -19,11 +19,11 @@ def generate_budget(file_dir, logger):
         output.write('\n')
 
     output.close()
+    logger = logging.getLogger()
     logger.info("Budget generation finished")
 
 
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    generate_budget(file_dir, logger)
+    generate_budget(file_dir)

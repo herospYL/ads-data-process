@@ -25,7 +25,7 @@ def _parse_point(line):
     return LabeledPoint(label, features)
 
 
-def ctr_gbdt(file_dir, logger):
+def ctr_gbdt(file_dir):
     sc = SparkContext(appName="CTRGBDTRegression")
 
     path = file_dir + CTR_TRAINING_DATA + "/part*"
@@ -44,6 +44,8 @@ def ctr_gbdt(file_dir, logger):
     predictions = model.predict(parsed_test_data.map(lambda x: x.features))
     labels_and_predictions = parsed_test_data.map(lambda lp: lp.label).zip(predictions)
     test_err = labels_and_predictions.filter(lambda vp: vp[0] != vp[1]).count() / float(parsed_test_data.count())
+
+    logger = logging.getLogger()
     logger.debug('GBDT Training Error = ' + str(test_err))
     logger.debug('Learned classification GBT model:')
     logger.debug(model.toDebugString())
@@ -56,10 +58,10 @@ def ctr_gbdt(file_dir, logger):
     logger.info("GBDT training finished")
 
 
-def ctr_logistic(file_dir, logger):
+def ctr_logistic(file_dir):
     sc = SparkContext(appName="CTRLogisticRegression")
 
-    path = file_dir + CTR_LOGISTIC_DATA + "/part*"
+    path = file_dir + CTR_TRAINING_DATA + "/part*"
     data = sc.textFile(path)
     (trainingData, testData) = data.randomSplit([0.7, 0.3])
 
@@ -72,6 +74,8 @@ def ctr_logistic(file_dir, logger):
     # Evaluating the model on training data
     labels_and_preds = parsed_test_data.map(lambda p: (p.label, model.predict(p.features)))
     train_err = labels_and_preds.filter(lambda vp: vp[0] != vp[1]).count() / float(parsed_test_data.count())
+
+    logger = logging.getLogger()
     logger.debug("Logistic Training Error = " + str(train_err))
     weights = model.weights
     logger.debug("weight = ", weights)
@@ -87,7 +91,5 @@ def ctr_logistic(file_dir, logger):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-
-    ctr_gbdt(file_dir, logger)
-    ctr_logistic(file_dir, logger)
+    ctr_gbdt(file_dir)
+    ctr_logistic(file_dir)

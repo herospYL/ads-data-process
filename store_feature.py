@@ -44,7 +44,7 @@ def _write_feature(feature_dir, key_prefix, redis_client, output, logger):
                 output.write('\n')
 
 
-def store_feature(file_dir, logger):
+def store_feature(file_dir):
     device_id_click = file_dir + DEVICE_ID_CLICK
     device_id_impression = file_dir + DEVICE_ID_IMPRESSION
 
@@ -64,6 +64,7 @@ def store_feature(file_dir, logger):
     feature_store_file = file_dir + FEATURE_STORE_FILE
     output = open(feature_store_file, "a")
     client = redis.StrictRedis()
+    logger = logging.getLogger()
 
     _write_feature(device_id_click, DEVICE_ID_CLICK_PREFIX, client, output, logger)
     _write_feature(device_id_impression, DEVICE_ID_IMPRESSION_PREFIX, client, output, logger)
@@ -87,5 +88,4 @@ def store_feature(file_dir, logger):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    store_feature(file_dir, logger)
+    store_feature(file_dir)

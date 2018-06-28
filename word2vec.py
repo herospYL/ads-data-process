@@ -11,7 +11,7 @@ WORD2VEC_TRACE = "word2vec_trace"
 SYNONYM_DATA_FILE = "synonym_data_file.txt"
 
 
-def word2vec(file_dir, logger):
+def word2vec(file_dir):
     word2vec_training_file = file_dir + WORD2VEC_TRAINING_FILE
     synonym_data_file = file_dir + SYNONYM_DATA_FILE
     word2vec_trace_data = file_dir + WORD2VEC_TRACE
@@ -25,6 +25,7 @@ def word2vec(file_dir, logger):
     vec = model.getVectors()
     synonyms_data = open(synonym_data_file, "w")
 
+    logger = logging.getLogger()
     logger.debug("len of vec:{0}".format(len(vec)))
     for word in vec.keys():
         synonyms = model.findSynonyms(word, 5)
@@ -46,5 +47,4 @@ def word2vec(file_dir, logger):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    word2vec(file_dir, logger)
+    word2vec(file_dir)

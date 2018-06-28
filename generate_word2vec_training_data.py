@@ -7,7 +7,7 @@ from generate_query_ad import AD_FILE
 WORD2VEC_TRAINING_FILE = "word2vec_training_file.txt"
 
 
-def generate_word2vec_training_data(file_dir, logger):
+def generate_word2vec_training_data(file_dir):
     ad_input_file = file_dir + AD_FILE
     word2vec_training_file = file_dir + WORD2VEC_TRAINING_FILE
 
@@ -40,11 +40,11 @@ def generate_word2vec_training_data(file_dir, logger):
                 word2vec_training.write('\n')
 
     word2vec_training.close()
+    logger = logging.getLogger()
     logger.info("Word2Vec training data preparation finished")
 
 
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    generate_word2vec_training_data(file_dir, logger)
+    generate_word2vec_training_data(file_dir)

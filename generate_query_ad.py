@@ -45,7 +45,7 @@ def calculate_relevance_score(query, keywords):
     return score
 
 
-def generate_query_ad(file_dir, logger):
+def generate_query_ad(file_dir):
     ad_input_file = file_dir + AD_FILE
     query_camp_ad_file = file_dir + QUERY_CAMP_AD_FILE
     campaign_weight_file = file_dir + CAMPAIGN_WEIGHT_FILE
@@ -61,6 +61,7 @@ def generate_query_ad(file_dir, logger):
     campaign_id_category = {}
     campaign_id_ad_id = {}
 
+    logger = logging.getLogger()
     with open(ad_input_file, "r") as lines:
         for line in lines:
             entry = json.loads(line.strip())
@@ -147,5 +148,4 @@ def generate_query_ad(file_dir, logger):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    generate_query_ad(file_dir, logger)
+    generate_query_ad(file_dir)

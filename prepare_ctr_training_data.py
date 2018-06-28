@@ -13,9 +13,12 @@ from store_feature import (DEVICE_ID_CLICK_PREFIX, DEVICE_ID_IMPRESSION_PREFIX, 
 
 CTR_TRAINING_DATA = "ctr_training_data"
 
+# Values are all string, default to always decode with utf-8
+# Global variable, thread-safe, this is used for avoiding the issue that Python is not able to pickle thread.lock object
+redis_client = redis.StrictRedis(decode_responses=True)
 
 # Device IP, Device id,Session id,Query,AdId,CampaignId,Ad_category_Query_category(0/1),clicked(0/1)
-def prepare_feature_val(fields, redis_client, logger):
+def prepare_feature_val(fields):
     device_ip = fields[0]
     device_id = fields[1]
     query = process_query(fields[3])
@@ -90,24 +93,24 @@ def prepare_feature_val(fields, redis_client, logger):
     return line
 
 
-def prepare_ctr_training_data(file_dir, logger):
-    client = redis.StrictRedis(decode_responses=True)  # Values are all string, default to always decode with utf-8
+def prepare_ctr_training_data(file_dir):
+    # client = redis.StrictRedis(decode_responses=True)  # Values are all string, default to always decode with utf-8
 
     sc = SparkContext(appName="CTR_Features")
 
     click_log_file = file_dir + CLICK_LOG_FILE
     data = sc.textFile(click_log_file, 100).map(lambda line: line.split(','))  # File is large, need more partition
-    feature_data = data.map(lambda fields: (prepare_feature_val(fields, client, logger), int(fields[7])))
+    feature_data = data.map(lambda fields: (prepare_feature_val(fields), int(fields[7])))
 
     ctr_training_data = file_dir + CTR_TRAINING_DATA
     feature_data.saveAsTextFile(ctr_training_data)
     sc.stop()
 
+    logger = logging.getLogger()
     logger.info("CTR training data preparation finished")
 
 
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    prepare_ctr_training_data(file_dir, logger)
+    prepare_ctr_training_data(file_dir)

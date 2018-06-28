@@ -22,7 +22,7 @@ def process_query(query):
     return output
 
 
-def select_feature(file_dir, logger):
+def select_feature(file_dir):
     click_log_input_file = file_dir + CLICK_LOG_FILE
 
     sc = SparkContext(appName="CTR_Features")
@@ -63,6 +63,7 @@ def select_feature(file_dir, logger):
     query_ad_id_impression.saveAsTextFile(file_dir + QUERY_AD_ID_IMPRESSION)
     sc.stop()
 
+    logger = logging.getLogger()
     logger.info("Feature selection finished")
 
 
@@ -71,5 +72,4 @@ def select_feature(file_dir, logger):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    logger = logging.getLogger()
-    select_feature(file_dir, logger)
+    select_feature(file_dir)
