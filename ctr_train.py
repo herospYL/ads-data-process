@@ -1,3 +1,4 @@
+import json
 import logging
 import sys
 
@@ -10,6 +11,8 @@ from prepare_ctr_training_data import CTR_TRAINING_DATA
 
 CTR_GBDT_DATA = "ctr_gbdt_data"
 CTR_LOGISTIC_DATA = "ctr_logistic_data"
+CTR_GBDT_STORE_FILE = "ctr_gbdt_store_file.txt"
+CTR_LOGISTIC_STORE_FILE = "ctr_logistic_store_file.txt"
 
 
 def _parse_point(line):
@@ -78,12 +81,22 @@ def ctr_logistic(file_dir):
     logger = logging.getLogger()
     logger.debug("Logistic Training Error = " + str(train_err))
     weights = model.weights
+    bias = model.intercept
     logger.debug("weight = ", weights)
-    logger.debug("bias =", model.intercept)
+    logger.debug("bias =", bias)
 
     # Save and load model
     ctr_logistic_data = file_dir + CTR_LOGISTIC_DATA
     model.save(sc, ctr_logistic_data)
+
+    # Save as JSON file
+    entry = {}
+    entry['weights'] = weights.toArray().tolist()
+    entry['bias'] = bias
+
+    ctr_logistic_store = file_dir + CTR_LOGISTIC_STORE_FILE
+    output = open(ctr_logistic_store, "w")
+    output.write(json.dumps(entry))
 
     logger.info("Logistic Regression training finished")
 
@@ -91,5 +104,5 @@ def ctr_logistic(file_dir):
 if __name__ == "__main__":
     file_dir = sys.argv[1]
 
-    ctr_gbdt(file_dir)
+    # ctr_gbdt(file_dir)
     ctr_logistic(file_dir)

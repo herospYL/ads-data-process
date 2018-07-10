@@ -13,7 +13,7 @@ from generate_click_log import (generate_click_log, USER_FILE)
 from select_feature import select_feature
 from store_feature import (store_feature, FEATURE_STORE_FILE)
 from prepare_ctr_training_data import prepare_ctr_training_data
-from ctr_train import (ctr_logistic, ctr_gbdt, CTR_LOGISTIC_DATA, CTR_GBDT_DATA)
+from ctr_train import (ctr_logistic, ctr_gbdt, CTR_LOGISTIC_DATA, CTR_GBDT_DATA, CTR_LOGISTIC_STORE_FILE, CTR_GBDT_STORE_FILE)
 
 
 def set_logger(file_dir, debug_mode):
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         s3.upload_file(file_dir + SYNONYM_STORE_FILE, bucket, SYNONYM_STORE_FILE)
         s3.upload_file(file_dir + FEATURE_STORE_FILE, bucket, FEATURE_STORE_FILE)
         # Need to know CTR training data file path
-        # s3.upload_file(file_dir + CTR_LOGISTIC_DATA + "?", bucket, CTR_LOGISTIC_DATA + "?")
+        s3.upload_file(file_dir + CTR_LOGISTIC_STORE_FILE, bucket, CTR_LOGISTIC_STORE_FILE)
         # s3.upload_file(file_dir + CTR_GBDT_DATA + "?", bucket, CTR_GBDT_DATA + "?")
 
     except Exception as e:
